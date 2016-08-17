@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://bootsfaces.net/ui">
+
+<head>
+<title>Acceso a prueba</title>
+</head>
+
+<body>
+	<h:form>
+		<h:inputText id="name" value="#{name}" placeholder="What's your name?" />
+		<h:commandButton value="Submit" />
+		<h:outputText value="Hello, #{name}" rendered="#{not empty name}" />
+	</h:form>
+	<b:navBar position="top" sticky="true" brandHref="#"
+		brand=" CONUNDRUM Financial Group" inverse="true"
+		brandImg="./imgs/4_PROPUESTA LOGO_colores.png" id="nb"
+		brandImgStyle="width:70px">
+		<b:navbarLinks pull="right">
+			<b:navLink value="Home" href="#home" icon-awesome="home"></b:navLink>
+			<b:navLink value="About Us" href="aboutus.xhtml"></b:navLink>
+			<b:dropMenu value="Our Services">
+				<b:navLink value="Invoice" href="invoice.xhtml"></b:navLink>
+			</b:dropMenu>
+			<!--  <b:navLink value="Contact" href="#contact"></b:navLink> -->
+		</b:navbarLinks>
+	</b:navBar>
+</body>
+</html>

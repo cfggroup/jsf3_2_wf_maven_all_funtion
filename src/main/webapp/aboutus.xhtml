@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>CFG Conundrum Financial Group</title>
+</h:head>
+<h:body>
+	<h:form>
+		<b:navBar position="top" sticky="true" brandHref="#"
+			brand=" CONUNDRUM Financial Group" inverse="true"
+			brandImg="./imgs/4_PROPUESTA LOGO_colores.png" id="nb"
+			brandImgStyle="width:70px">
+			<b:navbarLinks pull="right">
+				<b:navLink value="Home" href="index.xhtml" icon-awesome="home"></b:navLink>
+				<b:navLink value="About Us" href="#about"></b:navLink>
+				<b:dropMenu value="Our Services">
+					<b:navLink value="Invoice" href="invoice.xhtml"></b:navLink>
+				</b:dropMenu>
+
+			</b:navbarLinks>
+		</b:navBar>
+		<b:jumbotron
+			style="background-color: #F2F2F2; 
+                            background-image: url(./imgs/highrises.jpg);
+                            margin-bottom: 30px;
+                            height: 200px;
+                            background-position: 0% 44%;
+                            background-size: cover;
+                            background-repeat: no-repeat;
+                            text-shadow: white 0.1em 0.1em 0.1em;">
+			<h1 align="right" style="padding-right: 5%; padding-top: 5%">About
+				Us</h1>
+		</b:jumbotron>
+		<b:container id="scrollable">
+			<div id="about" class="container-fluid"
+				style="background-color: #FFFFFF">
+				<b:row>
+					<b:column col-sm="4" style="align:right">
+						<img width="80%" style="padding: 10px" src="./imgs/valores.jpg" />
+
+					</b:column>
+					<b:column col-sm="8">
+						<h2>Overview</h2>
+						<p style="font-style: italic; font-size: medium;">CFG sets its
+							main objective support , ensure and facilitate access to
+							financial credit to all businesses or individuals seeking backed
+							by a solid , serious and responsible entity to serve as a
+							guarantee to the commitments made by these thus generating the
+							necessary confidence applying the different financial
+							institutions.</p>
+						<br />
+						<h4>
+							<strong>MISION:</strong>
+						</h4>
+						<p style="font-style: italic; font-size: medium;">Facilitate
+							access to all those interested to finance, through granting
+							guarantees.</p>
+
+						<br />
+						<strong>VISION:</strong>
+						<p style="font-style: italic; font-size: medium;">Being par
+							excellence, the best option to support and guarantee for people
+							and companies seeking access to the capital markets.</p>
+
+					</b:column>
+				</b:row>
+				<hr />
+				<b:row>
+					<b:column col-sm="8">
+						<h2>Core Values</h2>
+
+						<h4 style="font-style: italic;">
+							<b:panelGrid colSpans="3,9">
+								<b:label text="Client Centricity" severity="info"
+									visible="md..." />
+								<br />
+								<b:label text="Integrity" severity="primary" visible="md..."
+									offset-sm="2" />
+								<br />
+								<b:label text="Sustainability" severity="info" visible="md..."
+									offset-sm="4" />
+								<br />
+								<b:label text="Commitment" severity="primary" visible="md..."
+									offset-sm="2" />
+								<br />
+								<b:label text="Teamwork" severity="info" visible="md..." />
+								<br />
+							</b:panelGrid>
+						</h4>
+
+					</b:column>
+					<b:column col-sm="4" style="align:right">
+						<img width="80%" style="padding: 10px" src="./imgs/inicio1.jpg" />
+
+					</b:column>
+				</b:row>
+
+			</div>
+
+		</b:container>
+		<b:scrollSpy target="nb" smooth="true" smoothSpeed="800" />
+		<br />
+	</h:form>
+</h:body>
+<b:navBar position="bottom" sticky="true" inverse="true"
+	style="background-color: black;">
+	<div style="color: gray;">© Copyright CFG 2016</div>
+</b:navBar>
+
+</html>

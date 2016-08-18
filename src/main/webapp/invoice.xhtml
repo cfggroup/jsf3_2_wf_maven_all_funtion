@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>CFG Conundrum Financial Group</title>
+	<script type="text/javascript">
+	   		function setHiddenValue(new_value){
+	   			//alert(new_value);
+	    		document.getElementById('hidden1').value = new_value;
+	   		}
+	   		
+	   		function valores(var1){
+	   			//alert(var1);
+	   		}
+		</script>
+</h:head>
+
+<!-- Add 50px padding top to the body for the navbar -->
+<h:body>
+	<h:form id="invoicePrint">
+
+		<b:navBar position="top" sticky="true"
+			brand=" CONUNDRUM Financial Group" brandHref="#" inverse="true"
+			brandImg="./imgs/4_PROPUESTA LOGO_colores.png" id="nb"
+			brandImgStyle="width:70px">
+			<b:navbarLinks pull="right">
+				<b:navLink value="Home" href="index.xhtml" icon-awesome="home"></b:navLink>
+				<b:navLink value="About Us" href="aboutus.xhtml"></b:navLink>
+				<b:dropMenu value="Our Services">
+					<b:navLink value="Invoice" href="#"></b:navLink>
+				</b:dropMenu>
+			</b:navbarLinks>
+		</b:navBar>
+		<b:jumbotron
+			style="background-color: #F2F2F2; 
+                            background-image: url(./imgs/gafas-en-un-escritorio-de-oficina-repleto-de-papeles-en-blanco-y-negro_1098-50.jpg);
+                            margin-bottom: 30px;
+                            height: 200px;
+                            background-position: 0% 80%;
+                            background-size: cover;
+                            background-repeat: no-repeat;
+                            text-shadow: white 0.1em 0.1em 0.1em;">
+			<h1 align="left" style="padding-left: 5%">Invoice</h1>
+
+		</b:jumbotron>
+		<b:container id="scrollable">
+			<div id="home" class="container-fluid">
+				<b:row>
+					<b:column col-sm="8">
+						<p>Select the client ID to which you want to generate a
+							invoice</p>
+						<b:panel>
+							<h:outputLabel value="Client ID:" />
+							<b:row>
+								<b:column medium-screen="2" style="width:250px">
+									<b:inputText placeholder="Client ID" id="cedulaID"
+										value="#{SelectOneMenuBean.cedula}" />
+								</b:column>
+								<b:column medium-screen="2">
+									<!--  <b:commandButton value="Search" ajax="true"  actionListener="#{SelectOneMenuBean.getDatosFacturaByCedula()}" look="primary" />-->
+									<b:commandButton value="Search" onclick="" look="primary"
+										update="invoiceTable" id="searchbtn" ajax="true" />
+								</b:column>
+
+							</b:row>
+							<br />
+							<b:row>
+								<b:column>
+
+									<b:dataTable value="#{SelectOneMenuBean.factura}" var="datos"
+										ajax="true" id="invoiceTable">
+										<b:column label="Invoice">
+											<b:commandButton ajax="false" look="link"
+												value="#{datos.num_factur}" id="invoiceID"
+												onclick="setHiddenValue(#{datos.num_factur}) #{SelectOneMenuBean.pdfFromXmlFile()}"
+												var="inv">
+												<input type="hidden" name="hidden1" id="hidden1" />
+											</b:commandButton>
+
+										</b:column>
+										<b:column value="#{datos.cedula}" label="Client ID">#{datos.cedula}</b:column>
+										<b:column value="#{datos.fecha_emi}" label="Emision">#{datos.fecha_emi}</b:column>
+									</b:dataTable>
+
+								</b:column>
+							</b:row>
+						</b:panel>
+					</b:column>
+					<b:column col-sm="4">
+						<img src="./imgs/efax000_sm.jpg" />
+					</b:column>
+				</b:row>
+			</div>
+			<hr />
+		</b:container>
+		<b:scrollSpy target="nb" smooth="true" smoothSpeed="800" />
+		<br />
+	</h:form>
+
+</h:body>
+<b:navBar position="bottom" sticky="true" inverse="true"
+	style="background-color: black;">
+	<div style="color: gray;">© Copyright CFG 2016</div>
+</b:navBar>
+</html>

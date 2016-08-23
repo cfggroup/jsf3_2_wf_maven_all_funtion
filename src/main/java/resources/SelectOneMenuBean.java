@@ -70,7 +70,8 @@ public class SelectOneMenuBean {
 
 	private int counter = 0;
 	private String lastMessage = null;
-	private List<String> messages = new ArrayList<>();
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private List<String> messages = new ArrayList();
 	private boolean action = false;
 
 	private Connection conexion;

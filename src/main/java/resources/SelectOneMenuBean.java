@@ -12,8 +12,8 @@ import org.apache.commons.io.IOUtils;
 
 import org.primefaces.context.RequestContext;
 
-//import net.sf.jasperreports.engine.JRExporter;
-//import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JRExporter;
+import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;

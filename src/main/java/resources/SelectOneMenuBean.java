@@ -366,6 +366,7 @@ public class SelectOneMenuBean {
 						ec.setResponseContentType("application/pdf");
 						ec.setResponseHeader("Content-Disposition", "attachment; filename='invoice_" + value + ".pdf'");
 						ec.setResponseContentLength(10000);
+						// Se seteo manual el tamaño de archivo
 						// //Genera problemas en Tomcat
 
 						OutputStream output = ec.getResponseOutputStream();

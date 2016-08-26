@@ -338,7 +338,7 @@ public class SelectOneMenuBean {
 							+ "   (VALOR+VAL_IVA) AS TOTAL, " + "   FORMAT(VALOR+VAL_IVA,2) AS TOTAL_F," + "   NOMBRE, "
 							+ "   DIRECCION, " + "   TELEFONO, " + "   FECHA_EMI "
 							+ "   FROM facturacab, gyr_cliente WHERE NUM_FACTUR = " + value
-							+ " AND FACTURACAB.CEDULA = gyr_cliente.CEDULA";
+							+ " AND facturacab.CEDULA = gyr_cliente.CEDULA";
 					System.out.println(sql);
 					ResultSet resultado = f.consultar(sql);
 
@@ -365,7 +365,7 @@ public class SelectOneMenuBean {
 
 						ec.setResponseContentType("application/pdf");
 						ec.setResponseHeader("Content-Disposition", "attachment; filename='invoice_" + value + ".pdf'");
-						// ec.setResponseContentLength(ec.getResponseBufferSize());
+						ec.setResponseContentLength(ec.getResponseBufferSize());
 						// //Genera problemas en Tomcat
 
 						OutputStream output = ec.getResponseOutputStream();

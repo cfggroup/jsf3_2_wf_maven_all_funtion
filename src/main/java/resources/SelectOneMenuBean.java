@@ -278,6 +278,7 @@ public class SelectOneMenuBean {
 					this.fecha_emi = resultados.getString("FECHA_EMI");
 					factura.add(new SelectOneMenuBean(this.num_factur, this.cedula, this.concepto, this.val_iva,
 							this.valor, this.fecha_emi));
+					
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -332,12 +333,12 @@ public class SelectOneMenuBean {
 				SelectOneMenuBean f = new SelectOneMenuBean();
 				SelectOneMenuBean con = f.conectar();
 				try {
-					String sql = "SELECT GYR_CLIENTE.CEDULA, " + "   NUM_FACTUR, " + "   CONCEPTO," + "   VAL_IVA,"
+					String sql = "SELECT gyr_cliente.CEDULA, " + "   NUM_FACTUR, " + "   CONCEPTO," + "   VAL_IVA,"
 							+ "   FORMAT(VAL_IVA,2) AS VAL_IVA_F," + "   VALOR," + "   FORMAT(VALOR,2) AS VALOR_F,"
 							+ "   (VALOR+VAL_IVA) AS TOTAL, " + "   FORMAT(VALOR+VAL_IVA,2) AS TOTAL_F," + "   NOMBRE, "
 							+ "   DIRECCION, " + "   TELEFONO, " + "   FECHA_EMI "
-							+ "   FROM facturacab, GYR_CLIENTE WHERE NUM_FACTUR = " + value
-							+ " AND FACTURACAB.CEDULA = GYR_CLIENTE.CEDULA";
+							+ "   FROM facturacab, gyr_cliente WHERE NUM_FACTUR = " + value
+							+ " AND FACTURACAB.CEDULA = gyr_cliente.CEDULA";
 					System.out.println(sql);
 					ResultSet resultado = f.consultar(sql);
 

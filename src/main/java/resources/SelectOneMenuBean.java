@@ -194,7 +194,7 @@ public class SelectOneMenuBean {
 	public SelectOneMenuBean conectar() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			String BaseDeDatos = "jdbc:mysql://localhost:3306/afianzate";
+			String BaseDeDatos = "jdbc:mysql://127.0.0.1:3306/afianzate";
 			conexion = DriverManager.getConnection(BaseDeDatos, "afianzate", "ticos1013");
 			if (conexion != null) {
 				System.out.println("Conexion exitosa!");
@@ -233,7 +233,7 @@ public class SelectOneMenuBean {
 
 		SelectOneMenuBean f = new SelectOneMenuBean();
 		f.conectar();
-		String sql = "SELECT CEDULA, NUM_FACTUR FROM FACTURACAB";
+		String sql = "SELECT CEDULA, NUM_FACTUR FROM facturacab";
 		ResultSet resultados = f.consultar(sql);
 		try {
 			while (resultados.next()) {
@@ -258,7 +258,7 @@ public class SelectOneMenuBean {
 			SelectOneMenuBean f = new SelectOneMenuBean();
 			SelectOneMenuBean con = f.conectar();
 			String sql = "SELECT CEDULA, NUM_FACTUR, CONCEPTO, " + " FORMAT(VAL_IVA,2) AS VAL_IVA, "
-					+ " FORMAT(VALOR,2) AS VALOR, " + " FECHA_EMI " + " FROM FACTURACAB " + " WHERE CEDULA = '"
+					+ " FORMAT(VALOR,2) AS VALOR, " + " FECHA_EMI " + " FROM facturacab " + " WHERE CEDULA = '"
 					+ this.cedula + "'";
 			System.out.println("Query1:" + sql);
 			ResultSet resultados = f.consultar(sql);
@@ -336,7 +336,7 @@ public class SelectOneMenuBean {
 							+ "   FORMAT(VAL_IVA,2) AS VAL_IVA_F," + "   VALOR," + "   FORMAT(VALOR,2) AS VALOR_F,"
 							+ "   (VALOR+VAL_IVA) AS TOTAL, " + "   FORMAT(VALOR+VAL_IVA,2) AS TOTAL_F," + "   NOMBRE, "
 							+ "   DIRECCION, " + "   TELEFONO, " + "   FECHA_EMI "
-							+ "   FROM FACTURACAB, GYR_CLIENTE WHERE NUM_FACTUR = " + value
+							+ "   FROM facturacab, GYR_CLIENTE WHERE NUM_FACTUR = " + value
 							+ " AND FACTURACAB.CEDULA = GYR_CLIENTE.CEDULA";
 					System.out.println(sql);
 					ResultSet resultado = f.consultar(sql);

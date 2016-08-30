@@ -12,8 +12,6 @@ import org.apache.commons.io.IOUtils;
 
 import org.primefaces.context.RequestContext;
 
-import net.sf.jasperreports.engine.JRExporter;
-import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -24,15 +22,6 @@ import net.sf.jasperreports.export.Exporter;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.swing.JRViewer;
-
-/*
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.export.SimpleExporterInput;
-import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
-import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
-import net.sf.jasperreports.view.JasperViewer;*/
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -317,8 +306,8 @@ public class SelectOneMenuBean {
 		System.out.println("Valor:" + value);
 
 		ServletContext ctx = (ServletContext) ec.getContext();
-		String realPath_in_jrxml = ctx.getRealPath("/jaspertemplate/invoice.jrxml");
-		String realPath_in_jasper = ctx.getRealPath("/jaspertemplate/invoice.jasper");
+		String realPath_in_jrxml = ctx.getRealPath("/jaspertemplate/invoice6.jrxml");
+		String realPath_in_jasper = ctx.getRealPath("/jaspertemplate/invoice6.jasper");
 
 		System.out.println("JRXML:" + realPath_in_jrxml);
 
@@ -366,8 +355,8 @@ public class SelectOneMenuBean {
 
 						ec.setResponseContentType("application/pdf");
 						ec.setResponseHeader("Content-Disposition", "attachment; filename='invoice_" + value + ".pdf'");
-						ec.setResponseContentLength(10000);
-						// ec.setResponseContentLength(ec.getResponseBufferSize());
+						//ec.setResponseContentLength(10000);
+						ec.setResponseContentLength(ec.getResponseBufferSize());
 						// Se seteo manual el tamaño de archivo
 						// //Genera problemas en Tomcat
 

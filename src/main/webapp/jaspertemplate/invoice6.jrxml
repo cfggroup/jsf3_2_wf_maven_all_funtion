@@ -4,11 +4,11 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Invoice" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="CFG_MySQL"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
-	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
-	<style name="Column header" mode="Opaque" forecolor="#FFFFFF" backcolor="#059CB0" fontName="Times New Roman" fontSize="14" isBold="true"/>
-	<style name="Detail" mode="Transparent" fontName="Times New Roman"/>
-	<style name="Row" mode="Transparent" backcolor="#F0F0F0" fontName="Times New Roman" pdfFontName="Times-Roman">
+	<style name="Title" forecolor="#FFFFFF" fontName="San Serif" fontSize="50" isBold="false" />
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="San Serif" fontSize="18" isBold="false" />
+	<style name="Column header" mode="Opaque" forecolor="#FFFFFF" backcolor="#059CB0" fontName="San Serif" fontSize="14" isBold="true"/>
+	<style name="Detail" mode="Transparent" fontName="San Serif"/>
+	<style name="Row" mode="Transparent" backcolor="#F0F0F0" fontName="San Serif" >
 		<conditionalStyle>
 			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
 			<style mode="Opaque" backcolor="#EEEFF0"/>

@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.2.final using JasperReports Library version 6.2.2  -->
-<!-- 2016-07-27T07:28:26 -->
+<!-- 2016-08-29T17:21:46 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Invoice" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9bb5bd98-2308-4ee3-b401-97a672731e0c">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="CFG_MySQL"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
-	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
-	<style name="Column header" mode="Opaque" forecolor="#FFFFFF" backcolor="#059CB0" fontName="Times New Roman" fontSize="14" isBold="true"/>
-	<style name="Detail" mode="Transparent" fontName="Times New Roman"/>
-	<style name="Row" mode="Transparent" backcolor="#F0F0F0" fontName="Times New Roman" pdfFontName="Times-Roman">
+	
 		<conditionalStyle>
 			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
 			<style mode="Opaque" backcolor="#EEEFF0"/>
@@ -164,7 +160,7 @@
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
-					<font size="16" isBold="true"/>
+					<font fontName="SansSerif" size="16" isBold="true"/>
 					<paragraph tabStopWidth="60"/>
 				</textElement>
 				<text><![CDATA[CFG CONUNDRUM FINANCIAL GROUP]]></text>
@@ -228,6 +224,9 @@
 			</textField>
 			<staticText>
 				<reportElement style="Column header" x="1" y="0" width="100" height="20" uuid="68b54507-c997-498e-87e0-24941bf449c4"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
 				<text><![CDATA[   Client ID]]></text>
 			</staticText>
 			<staticText>
@@ -235,6 +234,9 @@
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
 				<text><![CDATA[   Description]]></text>
 			</staticText>
 			<textField>
@@ -253,6 +255,9 @@
 			</textField>
 			<staticText>
 				<reportElement style="Column header" x="350" y="0" width="101" height="20" uuid="5e1c893f-9d91-4540-a99c-9040cff74f91"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
 				<text><![CDATA[   imp]]></text>
 			</staticText>
 			<textField pattern="¤ #,###,##0.00">
@@ -264,6 +269,9 @@
 			</textField>
 			<staticText>
 				<reportElement style="Column header" x="454" y="0" width="100" height="20" uuid="74997ed8-8130-4a4d-8b50-feabf8de06e4"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
 				<text><![CDATA[   Amount]]></text>
 			</staticText>
 		</band>

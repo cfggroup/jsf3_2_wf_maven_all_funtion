@@ -75,11 +75,19 @@
 										ajax="true" id="invoiceTable">
 										<b:column label="Invoice">
 											<b:commandButton ajax="false" look="link"
-												value="#{datos.num_factur}" id="invoiceID"
+												value="#{datos.num_factur}" id="invoiceID_#{datos.num_factur}"
 												onclick="setHiddenValue(#{datos.num_factur}) #{SelectOneMenuBean.pdfFromXmlFile()}"
 												var="inv">
 												<input type="hidden" name="hidden1" id="hidden1" />
 											</b:commandButton>
+											<!-- 
+											<h:commandButton ajax="false" look="link"
+												value="#{datos.num_factur}" id="invoiceID"
+												onclick="setHiddenValue(#{datos.num_factur}) #{SelectOneMenuBean.pdfFromXmlFile()}"
+												var="inv">
+												<input type="hidden" name="hidden1" id="hidden1" />
+											</h:commandButton>
+											 -->
 
 										</b:column>
 										<b:column value="#{datos.cedula}" label="Client ID" />

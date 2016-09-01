@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.JFrame;
 
-import org.apache.commons.io.IOUtils;
-
-import org.primefaces.context.RequestContext;
-
+import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
+
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.export.Exporter;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
@@ -227,7 +227,7 @@ public class SelectOneMenuBean {
 		ResultSet resultados = f.consultar(sql);
 		try {
 			while (resultados.next()) {
-				System.out.println(resultados.getString("NUM_FACTUR") + " " + resultados.getLong("CEDULA"));
+				//System.out.println(resultados.getString("NUM_FACTUR") + " " + resultados.getLong("CEDULA"));
 				facturas.add(new SelectItem(resultados.getString("NUM_FACTUR"), resultados.getString("CEDULA"),
 						resultados.getString("NUM_FACTUR")));
 			}
@@ -295,28 +295,24 @@ public class SelectOneMenuBean {
 	}
 
 	// Metodo para MySQL
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	
+	@SuppressWarnings("unchecked")
 	public void pdfFromXmlFile() throws SQLException, IOException {
-		// System.out.println("PDFFROMXML METHOD");
-
+		
 		FacesContext fc = FacesContext.getCurrentInstance();
 		ExternalContext ec = fc.getExternalContext();
 		String value = ec.getRequestParameterMap().get("hidden1");
-
-		System.out.println("Valor:" + value);
-
+		//System.out.println("Valor:" + value);
 		ServletContext ctx = (ServletContext) ec.getContext();
-		String realPath_in_jrxml = ctx.getRealPath("/jaspertemplate/invoice6.jrxml");
-		String realPath_in_jasper = ctx.getRealPath("/jaspertemplate/invoice6.jasper");
-
-		System.out.println("JRXML:" + realPath_in_jrxml);
-
+		String realPath_in_jrxml = ctx.getRealPath("/jaspertemplate/invoice.jrxml");
+		String realPath_in_jasper = ctx.getRealPath("/jaspertemplate/invoice.jasper");
+		//System.out.println("JRXML:" + realPath_in_jrxml);
 		if (value != null && value != "" && !value.isEmpty()) {
 
 			/* Definir la ruta absoluta del PDF (OUT) a partir de la relativa */
 			String realPath_out = ctx.getRealPath("/invoices");
 			File pdfAbsolutePath = new File(realPath_out + "/invoice_" + value + ".pdf");
-			System.out.println("realPath_out:" + realPath_out + " pdfAbsolutePath:" + pdfAbsolutePath);
+			//System.out.println("realPath_out:" + realPath_out + " pdfAbsolutePath:" + pdfAbsolutePath);
 			File fichero = new File(pdfAbsolutePath.toString());
 
 			if (!fichero.exists()) {
@@ -329,41 +325,26 @@ public class SelectOneMenuBean {
 							+ "   DIRECCION, " + "   TELEFONO, " + "   FECHA_EMI "
 							+ "   FROM facturacab, gyr_cliente WHERE NUM_FACTUR = " + value
 							+ " AND facturacab.CEDULA = gyr_cliente.CEDULA";
-					System.out.println(sql);
+					//System.out.println(sql);
 					ResultSet resultado = f.consultar(sql);
 
 					try {
-
 						JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(resultado);
-						System.out.println("ResultJasper:" + resultSetDataSource);
-
-						String jsFile = JasperCompileManager.compileReportToFile(realPath_in_jrxml);
-
-						JasperPrint jasperPrint = JasperFillManager.fillReport(jsFile, new HashMap(),
-								resultSetDataSource);
-
-						/*
-						 * JRViewer jv = new JRViewer(jasperPrint); JFrame jf =
-						 * new JFrame(); jf.getContentPane().add(jv);
-						 * jf.validate(); jf.setVisible(true); jf.setSize(new
-						 * Dimension(800,600)); jf.setLocation(300,100);
-						 * jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-						 */
-
+						//System.out.println("ResultJasper:" + resultSetDataSource);		
+						JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getResource("/resources/jaspertemplate/invoice6.jasper"));
+						//System.out.println("jasperReport:" + jasperReport);
+						@SuppressWarnings({ "rawtypes" })
+						JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, new HashMap(), resultSetDataSource);
+						//System.out.println("jasperPrint:" + jasperPrint);
 						fc.release();
 						ec.responseReset();
-
 						ec.setResponseContentType("application/pdf");
-						ec.setResponseHeader("Content-Disposition", "attachment; filename='invoice_" + value + ".pdf'");
-						//ec.setResponseContentLength(10000);
+						ec.setResponseHeader("Content-Disposition", "in-line; filename='invoice_" + value + ".pdf'");
 						ec.setResponseContentLength(ec.getResponseBufferSize());
-						// Se seteo manual el tamaño de archivo
-						// //Genera problemas en Tomcat
 
 						OutputStream output = ec.getResponseOutputStream();
-						// JasperExportManager.exportReportToPdfStream(jasperPrint,
-						// output);
 
+						@SuppressWarnings("rawtypes")
 						Exporter exporter = new JRPdfExporter();
 						exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
 						exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(output));
@@ -378,6 +359,7 @@ public class SelectOneMenuBean {
 				} finally {
 					// FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().put("hidden1",
 					// null);
+					System.out.println("Se salio por errores");
 					f.desconectar();
 				}
 			} else {

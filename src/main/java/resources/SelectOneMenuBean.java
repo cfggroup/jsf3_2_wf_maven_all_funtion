@@ -37,24 +37,28 @@ import java.nio.file.Files;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
+import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ActionListener;
 
 /**
  * Session Bean implementation class SelectOneMenuBean
  */
 
 @SuppressWarnings("unused")
-@ManagedBean
+@ManagedBean(name="SelectOneMenuBean")
 @RequestScoped
-
 public class SelectOneMenuBean {
 
 	private int counter = 0;
@@ -183,7 +187,7 @@ public class SelectOneMenuBean {
 	public SelectOneMenuBean conectar() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			//String BaseDeDatos = "jdbc:mysql://172.30.32.152:3306/afianzate";
+			// String BaseDeDatos = "jdbc:mysql://172.30.32.152:3306/afianzate";
 			String BaseDeDatos = "jdbc:mysql://127.0.0.1:3306/afianzate";
 			conexion = DriverManager.getConnection(BaseDeDatos, "afianzate", "ticos1013");
 			if (conexion != null) {
@@ -227,7 +231,8 @@ public class SelectOneMenuBean {
 		ResultSet resultados = f.consultar(sql);
 		try {
 			while (resultados.next()) {
-				//System.out.println(resultados.getString("NUM_FACTUR") + " " + resultados.getLong("CEDULA"));
+				// System.out.println(resultados.getString("NUM_FACTUR") + " " +
+				// resultados.getLong("CEDULA"));
 				facturas.add(new SelectItem(resultados.getString("NUM_FACTUR"), resultados.getString("CEDULA"),
 						resultados.getString("NUM_FACTUR")));
 			}
@@ -268,7 +273,7 @@ public class SelectOneMenuBean {
 					this.fecha_emi = resultados.getString("FECHA_EMI");
 					factura.add(new SelectOneMenuBean(this.num_factur, this.cedula, this.concepto, this.val_iva,
 							this.valor, this.fecha_emi));
-					
+
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -293,82 +298,123 @@ public class SelectOneMenuBean {
 		lastMessage = event;
 		// System.out.println(event);
 	}
-
-	// Metodo para MySQL
 	
-	@SuppressWarnings("unchecked")
-	public void pdfFromXmlFile() throws SQLException, IOException {
+	public void resetContext(){
 		
 		FacesContext fc = FacesContext.getCurrentInstance();
-		ExternalContext ec = fc.getExternalContext();
-		String value = ec.getRequestParameterMap().get("hidden1");
-		//System.out.println("Valor:" + value);
-		ServletContext ctx = (ServletContext) ec.getContext();
-		String realPath_in_jrxml = ctx.getRealPath("/jaspertemplate/invoice.jrxml");
-		String realPath_in_jasper = ctx.getRealPath("/jaspertemplate/invoice.jasper");
-		//System.out.println("JRXML:" + realPath_in_jrxml);
-		if (value != null && value != "" && !value.isEmpty()) {
-
-			/* Definir la ruta absoluta del PDF (OUT) a partir de la relativa */
-			String realPath_out = ctx.getRealPath("/invoices");
-			File pdfAbsolutePath = new File(realPath_out + "/invoice_" + value + ".pdf");
-			//System.out.println("realPath_out:" + realPath_out + " pdfAbsolutePath:" + pdfAbsolutePath);
-			File fichero = new File(pdfAbsolutePath.toString());
-
-			if (!fichero.exists()) {
-				SelectOneMenuBean f = new SelectOneMenuBean();
-				SelectOneMenuBean con = f.conectar();
-				try {
-					String sql = "SELECT gyr_cliente.CEDULA, " + "   NUM_FACTUR, " + "   CONCEPTO," + "   VAL_IVA,"
-							+ "   FORMAT(VAL_IVA,2) AS VAL_IVA_F," + "   VALOR," + "   FORMAT(VALOR,2) AS VALOR_F,"
-							+ "   (VALOR+VAL_IVA) AS TOTAL, " + "   FORMAT(VALOR+VAL_IVA,2) AS TOTAL_F," + "   NOMBRE, "
-							+ "   DIRECCION, " + "   TELEFONO, " + "   FECHA_EMI "
-							+ "   FROM facturacab, gyr_cliente WHERE NUM_FACTUR = " + value
-							+ " AND facturacab.CEDULA = gyr_cliente.CEDULA";
-					//System.out.println(sql);
-					ResultSet resultado = f.consultar(sql);
-
-					try {
-						JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(resultado);
-						//System.out.println("ResultJasper:" + resultSetDataSource);		
-						JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getResource("/resources/jaspertemplate/invoice6.jasper"));
-						//System.out.println("jasperReport:" + jasperReport);
-						@SuppressWarnings({ "rawtypes" })
-						JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, new HashMap(), resultSetDataSource);
-						//System.out.println("jasperPrint:" + jasperPrint);
-						fc.release();
-						ec.responseReset();
-						ec.setResponseContentType("application/pdf");
-						ec.setResponseHeader("Content-Disposition", "in-line; filename='invoice_" + value + ".pdf'");
-						ec.setResponseContentLength(ec.getResponseBufferSize());
-
-						OutputStream output = ec.getResponseOutputStream();
-
-						@SuppressWarnings("rawtypes")
-						Exporter exporter = new JRPdfExporter();
-						exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-						exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(output));
-						exporter.exportReport();
-
-						fc.responseComplete();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				} finally {
-					// FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().put("hidden1",
-					// null);
-					System.out.println("Se salio por errores");
-					f.desconectar();
-				}
-			} else {
-				// System.out.println("El fichero " + pdfAbsolutePath + "
-				// existe");
-			}
-		} else {
-			System.out.println("Value:" + value);
-		}
+		fc.responseComplete();
+		fc.release();
 	}
 
+	// Metodo para MySQL
+
+	@SuppressWarnings({ "unchecked", "static-access" })
+	public void pdfFromXmlFile() throws SQLException, IOException {
+
+		FacesContext fc = FacesContext.getCurrentInstance();
+		ExternalContext ec = fc.getExternalContext();
+
+		Map<String, String> requestParams = fc.getExternalContext().getRequestParameterMap();
+		System.out.println("RequestParametesr:" + requestParams);
+
+		if (!ec.isResponseCommitted()) {
+			String value = ec.getRequestParameterMap().get("hidden1");
+			System.out.println("no Committed");
+			/*
+			 * if(boton.getComponent().getClientId().equals("invoiceID"+value)){
+			 * 
+			 * System.out.println("Boton de PDF"); }
+			 */
+			HttpServletRequest request = (HttpServletRequest) fc.getExternalContext().getRequest();
+			@SuppressWarnings("rawtypes")
+			Enumeration params = request.getParameterNames();
+			System.out.println("Params:" + params);
+
+			// System.out.println("Valor:" + value);
+			ServletContext ctx = (ServletContext) ec.getContext();
+			String realPath_in_jrxml = ctx.getRealPath("/jaspertemplate/invoice.jrxml");
+			String realPath_in_jasper = ctx.getRealPath("/jaspertemplate/invoice.jasper");
+			// System.out.println("JRXML:" + realPath_in_jrxml);
+			if (value != null && value != "" && !value.isEmpty()) {
+
+				/*
+				 * Definir la ruta absoluta del PDF (OUT) a partir de la
+				 * relativa
+				 */
+				String realPath_out = ctx.getRealPath("/invoices");
+				File pdfAbsolutePath = new File(realPath_out + "/invoice_" + value + ".pdf");
+				// System.out.println("realPath_out:" + realPath_out + "
+				// pdfAbsolutePath:" + pdfAbsolutePath);
+				File fichero = new File(pdfAbsolutePath.toString());
+
+				if (!fichero.exists()) {
+					SelectOneMenuBean f = new SelectOneMenuBean();
+					SelectOneMenuBean con = f.conectar();
+					try {
+						String sql = "SELECT gyr_cliente.CEDULA, " + "   NUM_FACTUR, " + "   CONCEPTO," + "   VAL_IVA,"
+								+ "   FORMAT(VAL_IVA,2) AS VAL_IVA_F," + "   VALOR," + "   FORMAT(VALOR,2) AS VALOR_F,"
+								+ "   (VALOR+VAL_IVA) AS TOTAL, " + "   FORMAT(VALOR+VAL_IVA,2) AS TOTAL_F,"
+								+ "   NOMBRE, " + "   DIRECCION, " + "   TELEFONO, " + "   FECHA_EMI "
+								+ "   FROM facturacab, gyr_cliente WHERE NUM_FACTUR = " + value
+								+ " AND facturacab.CEDULA = gyr_cliente.CEDULA";
+						// System.out.println(sql);
+						ResultSet resultado = f.consultar(sql);
+
+						try {
+							JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(resultado);
+							// System.out.println("ResultJasper:" +
+							// resultSetDataSource);
+							JasperReport jasperReport = (JasperReport) JRLoader
+									.loadObject(getClass().getResource("/resources/jaspertemplate/invoice6.jasper"));
+							// System.out.println("jasperReport:" +
+							// jasperReport);
+							@SuppressWarnings({ "rawtypes" })
+							JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, new HashMap(),
+									resultSetDataSource);
+							// System.out.println("jasperPrint:" + jasperPrint);
+
+							// fc.responseComplete();
+							// fc.release();
+							ec.responseReset();
+							ec.setResponseContentType("application/pdf");
+							ec.setResponseHeader("Content-Disposition",
+									"attachment; filename='invoice_" + value + ".pdf'");
+							ec.setResponseContentLength(ec.getResponseBufferSize());
+
+							OutputStream output = ec.getResponseOutputStream();
+
+							@SuppressWarnings("rawtypes")
+							Exporter exporter = new JRPdfExporter();
+							exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+							exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(output));
+							exporter.exportReport();
+
+							// fc.getCurrentInstance().getViewRoot().getViewMap().clear();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					} finally {
+						//fc.release();
+						//FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().put("hidden1", null);
+						//fc.getCurrentInstance().getViewRoot().getViewMap().clear();
+						System.out.println("FINALLY");
+						f.desconectar();
+					}
+				} else {
+					// System.out.println("El fichero " + pdfAbsolutePath + "
+					// existe");
+				}
+			} else {
+				System.out.println("Invoice pdfFromXmlFile:" + value
+						+ " Salida del metodo ya que entra lo acciono el boton de Cedulas");
+			}
+
+		} else {
+			System.out.println("Committed");
+			
+			
+		}
+	}
 }

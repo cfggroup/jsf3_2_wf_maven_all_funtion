@@ -13,6 +13,10 @@
 	    		document.getElementById('hidden1').value = new_value;
 	   		}
 	   		
+	   		function resetValuePDF(valor){
+	   			document.getElementById('hidden1').value = null;
+	   		}
+	   		
 	   		function valores(var1){
 	   			//alert(var1);
 	   		}
@@ -47,8 +51,8 @@
 			<h1 align="left" style="padding-left: 5%">Invoice</h1>
 
 		</b:jumbotron>
-		<b:container id="scrollable">
-			<div id="home" class="container-fluid">
+		<b:container id="scrollable" >
+			<div id="home" class="container-fluid" >
 				<b:row>
 					<b:column col-sm="8">
 						<p>Select the client ID to which you want to generate a
@@ -58,12 +62,16 @@
 							<b:row>
 								<b:column medium-screen="2" style="width:250px">
 									<b:inputText placeholder="Client ID" id="cedulaID"
-										value="#{SelectOneMenuBean.cedula}" />
+										value="#{SelectOneMenuBean.cedula}" >
+										
+									</b:inputText>
 								</b:column>
 								<b:column medium-screen="2">
 									<!--  <b:commandButton value="Search" ajax="true"  actionListener="#{SelectOneMenuBean.getDatosFacturaByCedula()}" look="primary" />-->
-									<b:commandButton value="Search" onclick="" look="primary"
-										update="invoiceTable" id="searchbtn" ajax="true" />
+									<b:commandButton value="Search" look="primary"
+										update="invoiceTable" id="searchbtn" ajax="false" onclick=""	>											
+									</b:commandButton>
+										
 								</b:column>
 
 							</b:row>
@@ -72,22 +80,19 @@
 								<b:column>
 
 									<b:dataTable value="#{SelectOneMenuBean.factura}" var="datos"
-										ajax="true" id="invoiceTable">
+										ajax="true" id="invoiceTable" >
+										
 										<b:column label="Invoice">
+											
 											<b:commandButton ajax="false" look="link"
-												value="#{datos.num_factur}" id="invoiceID_#{datos.num_factur}"
+												value="#{datos.num_factur}"
+												id="invoiceID_#{datos.num_factur}"
 												onclick="setHiddenValue(#{datos.num_factur}) #{SelectOneMenuBean.pdfFromXmlFile()}"
-												var="inv">
+												var="inv" onmouseout="resetValuePDF(#{datos.num_factur});">
 												<input type="hidden" name="hidden1" id="hidden1" />
+												
 											</b:commandButton>
-											<!-- 
-											<h:commandButton ajax="false" look="link"
-												value="#{datos.num_factur}" id="invoiceID"
-												onclick="setHiddenValue(#{datos.num_factur}) #{SelectOneMenuBean.pdfFromXmlFile()}"
-												var="inv">
-												<input type="hidden" name="hidden1" id="hidden1" />
-											</h:commandButton>
-											 -->
+
 
 										</b:column>
 										<b:column value="#{datos.cedula}" label="Client ID" />

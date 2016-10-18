@@ -188,8 +188,11 @@ public class SelectOneMenuBean {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			// String BaseDeDatos = "jdbc:mysql://172.30.32.152:3306/afianzate";
-			String BaseDeDatos = "jdbc:mysql://127.0.0.1:3306/afianzate";
-			conexion = DriverManager.getConnection(BaseDeDatos, "afianzate", "ticos1013");
+			//String BaseDeDatos = "jdbc:mysql://127.0.0.1:3306/afianzate";
+			String BaseDeDatos = "jdbc:mysql://us-cdbr-iron-east-04.cleardb.net:3306/ad_bb616afda5cf2c2";
+			conexion = DriverManager.getConnection(BaseDeDatos, "be074d9b1e0b67", "42fdb0e0");
+
+			//conexion = DriverManager.getConnection(BaseDeDatos, "afianzate", "ticos1013");
 			if (conexion != null) {
 				System.out.println("Conexion exitosa!");
 			} else {

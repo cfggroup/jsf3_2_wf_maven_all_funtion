@@ -8,6 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.JFrame;
 
+import com.lowagie.text.Document;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfWriter;
+
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -29,9 +33,11 @@ import javax.faces.context.FacesContext;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.nio.file.Files;
 import java.sql.*;
@@ -216,6 +222,7 @@ public class SelectOneMenuBean {
 	}
 
 	public ResultSet consultar(String sql) {
+		System.out.println("RS:"+sql);
 		ResultSet resultado = null;
 		try {
 			Statement sentencia;
@@ -313,9 +320,10 @@ public class SelectOneMenuBean {
 
 	// Metodo para MySQL
 
-	@SuppressWarnings({ "unchecked", "static-access" })
+	@SuppressWarnings({ "unchecked" })
 	public void pdfFromXmlFile() throws SQLException, IOException {
-
+				
+		System.out.println("pdfFromXmlFile");
 		FacesContext fc = FacesContext.getCurrentInstance();
 		ExternalContext ec = fc.getExternalContext();
 
@@ -323,6 +331,7 @@ public class SelectOneMenuBean {
 		System.out.println("RequestParametesr:" + requestParams);
 
 		if (!ec.isResponseCommitted()) {
+			//String value = "1705781";
 			String value = ec.getRequestParameterMap().get("hidden1");
 			System.out.println("no Committed");
 			/*
@@ -335,7 +344,7 @@ public class SelectOneMenuBean {
 			Enumeration params = request.getParameterNames();
 			System.out.println("Params:" + params);
 
-			// System.out.println("Valor:" + value);
+			System.out.println("Valor:" + value);
 			ServletContext ctx = (ServletContext) ec.getContext();
 			String realPath_in_jrxml = ctx.getRealPath("/jaspertemplate/invoice.jrxml");
 			String realPath_in_jasper = ctx.getRealPath("/jaspertemplate/invoice.jasper");
@@ -362,24 +371,31 @@ public class SelectOneMenuBean {
 								+ "   NOMBRE, " + "   DIRECCION, " + "   TELEFONO, " + "   FECHA_EMI "
 								+ "   FROM facturacab, gyr_cliente WHERE NUM_FACTUR = " + value
 								+ " AND facturacab.CEDULA = gyr_cliente.CEDULA";
-						// System.out.println(sql);
-						ResultSet resultado = f.consultar(sql);
-
+						 System.out.println(sql);
+						 ResultSet resultado = f.consultar(sql);
+						 System.out.println("ResulSet:"+resultado);
 						try {
+							System.out.println("ResultJasper IN:");
 							JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(resultado);
-							// System.out.println("ResultJasper:" +
-							// resultSetDataSource);
-							JasperReport jasperReport = (JasperReport) JRLoader
-									.loadObject(getClass().getResource("/resources/jaspertemplate/invoice6.jasper"));
-							// System.out.println("jasperReport:" +
-							// jasperReport);
+							System.out.println("ResultJasper:"+resultSetDataSource);
+							JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getResource("/resources/jaspertemplate/invoice6.jasper"));
+							System.out.println("jasperReport:" + jasperReport);
 							@SuppressWarnings({ "rawtypes" })
-							JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, new HashMap(),
-									resultSetDataSource);
-							// System.out.println("jasperPrint:" + jasperPrint);
+							JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, new HashMap(),resultSetDataSource);
+							System.out.println("jasperPrint:" + jasperPrint);
+							
+							/* ccccccc Codigo de Prueba PDF con ITEXT ccccccc */
+							//Document documento = new Document();
+							//FileOutputStream ficheroPdf = new FileOutputStream("fichero.pdf");
+							///PdfWriter.getInstance(documento,ficheroPdf).setInitialLeading(20);
+							//documento.open();
+							//documento.add(new Paragraph("Esto es el primer párrafo, normalito"));
+							//documento.add(new Paragraph("Este es el segundo y tiene una fuente rara",FontFactory.getFont("arial",22,Font.ITALIC,BaseColor.CYAN)));
+							//documento.close();
+							/* cccccccccccccccccccccccccccccccccccccccccccccc */
 
-							// fc.responseComplete();
-							// fc.release();
+							//fc.responseComplete();
+							//fc.release();
 							ec.responseReset();
 							ec.setResponseContentType("application/pdf");
 							ec.setResponseHeader("Content-Disposition",
@@ -401,7 +417,7 @@ public class SelectOneMenuBean {
 					} catch (Exception e) {
 						e.printStackTrace();
 					} finally {
-						//fc.release();
+						fc.release();
 						//FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().put("hidden1", null);
 						//fc.getCurrentInstance().getViewRoot().getViewMap().clear();
 						System.out.println("FINALLY");

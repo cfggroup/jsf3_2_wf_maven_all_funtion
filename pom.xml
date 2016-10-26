@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>jsf2_2_wf_maven_all_function</groupId>
-	<artifactId>jsf2_2_wf_maven_all_function</artifactId>
+	<groupId>jsf3_2_wf_maven_all_function</groupId>
+	<artifactId>jsf3_2_wf_maven_all_function</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>jsf2_2_wf_maven_all_function</name>
+	<name>jsf3_2_wf_maven_all_function</name>
 	<dependencies>
 		<dependency>
 			<groupId>net.bootsfaces</groupId>
@@ -36,6 +36,11 @@
 			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports</artifactId>
 			<version>6.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports-fonts</artifactId>
+			<version>6.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.spec</groupId>
@@ -92,23 +97,4 @@
 			<layout>default</layout>
 		</repository>
 	</repositories>
-
-	<profiles>
-		<profile>
-			<id>openshift</id>
-			<build>
-				<finalName>jobstore</finalName>
-				<plugins>
-					<plugin>
-						<artifactId>maven-war-plugin</artifactId>
-						<version>2.1.1</version>
-						<configuration>
-							<outputDirectory>deployments</outputDirectory>
-							<warName>ROOT</warName>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 </project>

@@ -1,0 +1,9 @@
+---
+applications:
+- name: jsf3_2_wf_maven_all_function
+  memory: 1024M
+  host: java2_2_wf_maven_all_function
+  domain: cfapps.io
+  buildpack: java_buildpack
+  services:
+  - CFG_BD

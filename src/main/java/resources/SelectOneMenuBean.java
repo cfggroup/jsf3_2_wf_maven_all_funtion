@@ -378,7 +378,7 @@ public class SelectOneMenuBean {
 							System.out.println("ResultJasper IN:");
 							JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(resultado);
 							System.out.println("ResultJasper:"+resultSetDataSource);
-							JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getResource("/resources/jaspertemplate/invoice6.jasper"));
+							JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getResource("invoice6.jasper"));
 							System.out.println("jasperReport:" + jasperReport);
 							@SuppressWarnings({ "rawtypes" })
 							JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, new HashMap(),resultSetDataSource);
